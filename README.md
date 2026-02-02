@@ -105,7 +105,7 @@ The playbook:
 
 6. Healthy containers are never modified.
 
-##Ansible Commands
+## Ansible Commands
 
 Dry Run Validation
 
