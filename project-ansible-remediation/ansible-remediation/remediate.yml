@@ -1,0 +1,51 @@
+---
+- name: Remediate bad application versions
+  hosts: app_devices
+  connection: local
+  gather_facts: no
+
+  vars:
+    bad_version: "1.3"
+    good_version: "1.2"
+    image_name: "app:1.2"
+
+  tasks:
+
+    - name: Get container environment variables
+      command: docker inspect --format='{{ "{{" }}range .Config.Env{{ "}}" }}{{ "{{" }}.{{ "}}" }}{{ "{{" }}end{{ "}}" }}' {{ inventory_hostname }}
+      register: container_env
+      changed_when: false
+      check_mode: no
+
+    - name: Determine if container is running bad version
+      set_fact:
+        needs_remediation: "{{ bad_version in container_env.stdout }}"
+
+    # Inspect container configuration to detect known-bad versions
+    # This runs even in check mode because it is read-only
+    
+    - name: Show remediation decision
+      debug:
+        msg:
+          container: "{{ inventory_hostname }}"
+          env_output: "{{ container_env.stdout }}"
+          needs_remediation: "{{ needs_remediation }}"
+          
+    - name: Stop container if running bad version
+      command: docker stop {{ inventory_hostname }}
+      when: needs_remediation
+
+    - name: Remove container if running bad version
+      command: docker rm {{ inventory_hostname }}
+      when: needs_remediation
+
+    - name: Recreate container with good version
+      command: >
+        docker run -d
+        --name {{ inventory_hostname }}
+        -e APP_VERSION={{ good_version }}
+        -p {{ '8081' if inventory_hostname == 'app01'
+              else '8082' if inventory_hostname == 'app02'
+              else '8083' }}:8080
+        {{ image_name }}
+      when: needs_remediation
