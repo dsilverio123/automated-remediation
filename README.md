@@ -109,9 +109,14 @@ The playbook:
 
 Dry Run Validation
 
+```
 ansible-playbook -i inventory.ini remediate.yml --check
+```
 
-After dry run succeeds, ansible-playbook -i inventory.ini remediate.yml
+After dry run succeeds and you see the erroring devices, run the following:
 
+```
+ansible-playbook -i inventory.ini remediate.yml
+```
 
 
