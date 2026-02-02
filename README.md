@@ -3,7 +3,7 @@
 
 A local lab demonstrating **Ansible-based application remediation** across multiple Docker environments to simulate real-world production support scenarios involving bad version rollouts and safe recovery.
 
-This project focuses on **operational remediation**, not CI/CD, and mirrors how Application Support and SRE teams safely respond to incidents in live environments.
+This project focuses on **operational remediation**, and mirrors how Application Support and SRE teams safely respond to incidents in live environments.
 
 ---
 
@@ -89,7 +89,7 @@ app03
 
 ```
 
-##Remediation Logic
+## Remediation Logic
 
 The playbook:
 
@@ -118,5 +118,20 @@ After dry run succeeds and you see the erroring devices, run the following:
 ```
 ansible-playbook -i inventory.ini remediate.yml
 ```
+
+## Expected Behavior After Ansible Script
+
+
+<img width="570" height="297" alt="image" src="https://github.com/user-attachments/assets/72973ec9-598c-40ed-aa5f-24e9b784525b" />
+
+<img width="549" height="324" alt="image" src="https://github.com/user-attachments/assets/21a38daf-917d-47a2-88e8-b3690141da48" />
+
+<img width="539" height="300" alt="image" src="https://github.com/user-attachments/assets/99d9763a-a2b5-48fa-933b-5376bd516809" />
+
+
+
+
+
+
 
 
