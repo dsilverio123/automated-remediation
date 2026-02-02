@@ -12,8 +12,13 @@ This project focuses on **operational remediation**, not CI/CD, and mirrors how 
 This lab simulates three application instances running as Docker containers:
 
 - **app01** → healthy version (`1.2`)
+<img width="512" height="330" alt="image" src="https://github.com/user-attachments/assets/beead5b6-93d7-4e41-8663-8ca7b7ac9f15" />
+
 - **app02** → unhealthy version (`1.3`)
+<img width="522" height="336" alt="image" src="https://github.com/user-attachments/assets/26fdb0c9-28f0-48bc-b6a6-cf12f7547cdd" />
+
 - **app03** → unhealthy version (`1.3`)
+<img width="576" height="291" alt="image" src="https://github.com/user-attachments/assets/b6144eed-dd2d-4f73-8f55-fac81da68b90" />
 
 Each application exposes:
 - A simple web GUI
@@ -57,6 +62,18 @@ This reflects how production support teams operate in real environments.
 | app02 | 8082 | 1.3 |
 | app03 | 8083 | 1.3 |
 
+DockerFile Commands
+
+Build Docker Image:
+
+docker build -t app:1.2 .
+
+Build Containers:
+
+docker run -d --name app01 -e APP_VERSION=1.2 -p 8081:8080 app:1.2
+docker run -d --name app02 -e APP_VERSION=1.3 -p 8082:8080 app:1.2
+docker run -d --name app03 -e APP_VERSION=1.3 -p 8083:8080 app:1.2
+
 ---
 
 ## Ansible Inventory
@@ -66,6 +83,32 @@ This reflects how production support teams operate in real environments.
 app01
 app02
 app03
+
+```
+
+##Remediation Logic
+
+The playbook:
+
+1. Inspects container environment variables
+
+2. Determines if a bad version is running
+
+3. Prints remediation decisions per host
+
+4. Stops and removes unhealthy containers
+
+5. Recreates them using the healthy version
+
+6. Healthy containers are never modified.
+
+##Ansible Commands
+
+Dry Run Validation
+
+ansible-playbook -i inventory.ini remediate.yml --check
+
+After dry run succeeds, ansible-playbook -i inventory.ini remediate.yml
 
 
 
