@@ -1,4 +1,3 @@
-<img width="1894" height="5004" alt="image" src="https://github.com/user-attachments/assets/bf94f981-1eb2-404e-9dfb-33d14e0f3bd8" /># automated-remediation
 
 # automated-remediation
 
