@@ -65,15 +65,18 @@ This reflects how production support teams operate in real environments.
 DockerFile Commands
 
 Build Docker Image:
-
+```
 docker build -t app:1.2 .
-
+```
 Build Containers:
 
+```
 docker run -d --name app01 -e APP_VERSION=1.2 -p 8081:8080 app:1.2
-docker run -d --name app02 -e APP_VERSION=1.3 -p 8082:8080 app:1.2
-docker run -d --name app03 -e APP_VERSION=1.3 -p 8083:8080 app:1.2
 
+docker run -d --name app02 -e APP_VERSION=1.3 -p 8082:8080 app:1.2
+
+docker run -d --name app03 -e APP_VERSION=1.3 -p 8083:8080 app:1.2
+```
 ---
 
 ## Ansible Inventory
